@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/rook2pawn/node-ddos.svg?branch=master)](https://travis-ci.org/rook2pawn/node-ddos)
+
+
 example
 =======
 

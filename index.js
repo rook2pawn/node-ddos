@@ -30,8 +30,10 @@ var ddos = function(params) {
     }
     var timer = setInterval(update,params.checkinterval*1000) 
     this.stop = function() {
-        if (timer) 
+        if (timer) {
+            console.log("ddos: stopping", timer)
             clearInterval(timer)
+        }
     }
     var handle = function(req,res,next) {
         var host = req.headers.host;

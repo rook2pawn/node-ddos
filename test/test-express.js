@@ -65,6 +65,7 @@ tape('count and expiry test', function(t) {
         })
         },
         function(lib) {
+            server.close()
             ddos.stop()
             lib.done()
             console.log("End of test")
