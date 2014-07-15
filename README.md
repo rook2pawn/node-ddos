@@ -26,6 +26,8 @@ When count exceeds the limit, then the request is denied, otherwise, the request
 Every time the internal table is checked, the expiration goes down by the time elapsed.
 When expiration hits 0, the entry is deleted from the table, and new requests are allowed like normal.
 
+The only way for a user who has denied requests to continue is for them to let the expiration time pass.
+
 
 Let's review Configuration
 ==========================
