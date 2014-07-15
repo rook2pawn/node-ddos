@@ -19,7 +19,7 @@ var ddos = function(params) {
     console.log("ddos: starting params: ", params)
     var table = {}
     var update = function() {
-        console.log("ddos: update", table)
+        //console.log("ddos: update", table)
         var keys = Object.keys(table)
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i]
@@ -31,7 +31,7 @@ var ddos = function(params) {
     var timer = setInterval(update,params.checkinterval*1000) 
     this.stop = function() {
         if (timer) {
-            console.log("ddos: stopping", timer)
+            //console.log("ddos: stopping", timer)
             clearInterval(timer)
         }
     }
