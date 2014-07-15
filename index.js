@@ -9,7 +9,7 @@ var ddos = function(params) {
     _params.maxexpiry = 120;
     _params.checkinterval = 1;
     _params.errormessage = 'Error';
-    _params.detailfeedback = false;
+    _params.testmode = false;
     if (!params) {
         params = _params;
     } else {
@@ -36,6 +36,9 @@ var ddos = function(params) {
         }
     }
     var handle = function(req,res,next) {
+        if (params.testmode) {
+            console.log('ddos: handle: beginning:', table)
+        }
         var host = req.headers.host;
         if (!table[host])
             table[host] = { count : 1, expiry : 1 }
@@ -52,7 +55,7 @@ var ddos = function(params) {
         }
         if (table[host].count > params.limit) {
             console.log('ddos: denied: entry:', table[host])
-            if (params.detailfeedback) {
+            if (params.testmode) {
                 res.json(500, table[host])
             } else {
                 res.writeHead(500);
@@ -60,6 +63,9 @@ var ddos = function(params) {
             }
         } else {         
             next()
+        }
+        if (params.testmode) {
+            console.log('ddos: handle: end:', table)
         }
     }
     this.express = handle;

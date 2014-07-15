@@ -2,7 +2,7 @@ var http = require('http');
 var express = require('express')
 var request = require('request');
 var response = require('response')
-var Ddos = require('../'); var ddos = new Ddos({burst:3,limit:4,detailfeedback:true})
+var Ddos = require('../'); var ddos = new Ddos({burst:3,limit:4,testmode:true})
 var app = express(); app.use(ddos.express)
 var server = http.createServer(app);
 
@@ -65,12 +65,35 @@ tape('count and expiry test', function(t) {
         })
         },
         function(lib) {
-            server.close()
-            ddos.stop()
             lib.done()
-            console.log("End of test")
             t.end()
         }
     ],
     100)
+})
+
+tape('then', function(t) {
+    t.plan(1)
+    setTimeout(function() {
+        request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
+            var key = Object.keys(ddos.table)[0]
+            // should start at {count:5, expiry:5} since 12 - 7 = 5
+            // after a request, it should penalize for being over burst, which means
+            // expiry goes to 10
+            t.deepEqual(ddos.table[key], {count:6, expiry:10})
+        })
+    },7000)
+})
+
+tape('finally',function(t) {
+    t.plan(2)
+    setTimeout(function() {
+        t.deepEqual(ddos.table, {})
+        request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
+            var key = Object.keys(ddos.table)[0]
+            t.deepEqual(ddos.table[key], {count:1,expiry:1})
+            server.close()
+            ddos.stop()
+        })
+    },10500)
 })
