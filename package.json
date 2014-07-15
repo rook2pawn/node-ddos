@@ -27,5 +27,8 @@
     "request": "^2.37.0",
     "response": "https://github.com/mikeal/response/archive/master.tar.gz",
     "tape": "^2.13.3"
+  },
+  "dependencies": {
+    "hashish": "0.0.4"
   }
 }
