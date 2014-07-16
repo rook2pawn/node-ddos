@@ -1,6 +1,6 @@
 {
   "name": "ddos",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -25,10 +25,10 @@
     "express": "^4.6.1",
     "queuelib": "^1.0.0",
     "request": "^2.37.0",
-    "response": "https://github.com/mikeal/response/archive/master.tar.gz",
     "tape": "^2.13.3"
   },
   "dependencies": {
-    "hashish": "0.0.4"
+    "hashish": "0.0.4",
+    "response": "https://github.com/mikeal/response/archive/master.tar.gz"
   }
 }

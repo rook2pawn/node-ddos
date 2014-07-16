@@ -37,28 +37,28 @@ tape('count and expiry test', function(t) {
         function(lib) {
         request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
             var key = Object.keys(ddos.table)[0]
-            t.deepEqual(ddos.table[key], {count:2, expiry:2})
+            t.deepEqual(ddos.table[key], {count:2, expiry:1})
             lib.done()
         })
         },
         function(lib) {
         request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
             var key = Object.keys(ddos.table)[0]
-            t.deepEqual(ddos.table[key], {count:3, expiry:3})
+            t.deepEqual(ddos.table[key], {count:3, expiry:1})
             lib.done()
         })
         },
         function(lib) {
         request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
             var key = Object.keys(ddos.table)[0]
-            t.deepEqual(ddos.table[key], {count:4, expiry:6})
+            t.deepEqual(ddos.table[key], {count:4, expiry:2})
             lib.done()
         })
         },
         function(lib) {
         request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
             var key = Object.keys(ddos.table)[0]
-            t.deepEqual(ddos.table[key], {count:5, expiry:12})
+            t.deepEqual(ddos.table[key], {count:5, expiry:4})
             t.equal(resp.statusCode, 500, 'should be 500')        
             t.equal(body.count, 5, 'should be 5')        
             lib.done()
@@ -77,12 +77,12 @@ tape('then', function(t) {
     setTimeout(function() {
         request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
             var key = Object.keys(ddos.table)[0]
-            // should start at {count:5, expiry:5} since 12 - 7 = 5
+            // should start at {count:5, expiry:1} since 4 - 3 = 1
             // after a request, it should penalize for being over burst, which means
-            // expiry goes to 10
-            t.deepEqual(ddos.table[key], {count:6, expiry:10})
+            // expiry goes to 2 
+            t.deepEqual(ddos.table[key], {count:6, expiry:2})
         })
-    },7000)
+    },3100)
 })
 
 tape('finally',function(t) {
@@ -95,5 +95,5 @@ tape('finally',function(t) {
             server.close()
             ddos.stop()
         })
-    },10500)
+    },2100)
 })

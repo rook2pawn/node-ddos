@@ -1,4 +1,5 @@
 var Hash = require('hashish')
+var response = require('response')
 var ddos = function(params) {
     // burst, maxexpiry, checkinterval is in seconds
     // limit is the maximum count
@@ -56,7 +57,7 @@ var ddos = function(params) {
         if (table[host].count > params.limit) {
             console.log('ddos: denied: entry:', table[host])
             if (params.testmode) {
-                res.json(500, table[host])
+                response.json(table[host]).status(500).pipe(res)
             } else {
                 res.writeHead(500);
                 res.end(params.errormessage);

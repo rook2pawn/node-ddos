@@ -8,7 +8,7 @@ var server = http.createServer(app.handle)
 
 server.listen(5050);
 
-var ddos = new Ddos;
+var ddos = new Ddos({testmode:true});
 var a = function(req,res,next) {
     next()
 }
