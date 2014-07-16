@@ -24,7 +24,7 @@ var ddos = function(params) {
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i]
             table[key].expiry -= params.checkinterval;
-            if (table[key].expiry === 0) 
+            if (table[key].expiry <= 0) 
                 delete table[key]
         }
     }
@@ -50,7 +50,7 @@ var ddos = function(params) {
                 if (table[host].expiry < params.maxexpiry) 
                     table[host].expiry = Math.min(params.maxexpiry,table[host].expiry * 2)
             } else {
-                table[host].expiry += params.checkinterval;
+                table[host].expiry = 1;
             }
         }
         if (table[host].count > params.limit) {
