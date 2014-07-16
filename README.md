@@ -19,15 +19,33 @@ How does this ddos prevention module work?
 Every request marks the internal table.
 This is how an entry in the table managed by this module looks
 
-    { host : <ip address>, count: 5, expiry: 6 }
+    { host : <ip address>, count: 1, expiry: 1 }
 
-When count exceeds the limit, then the request is denied, otherwise, the request is permitted.
+When a second request is made
+
+    { host : <ip address>, count: 2, expiry: 1 }
+
+and the third 
+
+    { host : <ip address>, count: 3, expiry: 1 }
+
+and so on. If the count exceeds the configurable **burst** amount, then the expiry goes up by twice the previous expiry, 1, 2, 4, 8, 16, etc.
+
+When count exceeds the **limit**, then the request is denied, otherwise, the request is permitted.
 
 Every time the internal table is checked, the expiration goes down by the time elapsed.
-When expiration hits 0, the entry is deleted from the table, and new requests are allowed like normal.
 
-The only way for a user who has denied requests to continue is for them to let the expiration time pass.
+The only way for a user who has denied requests to continue is for them to let the expiration time pass, and when expiration hits 0, the entry is deleted from the table, and new requests are allowed like normal.
 
+Processing and Memory Usage by this module
+==========================================
+
+There is only ONE table, and within it only one small entry per IP, and that entry is transient and will be deleted within normal parameters. The table itself is combed over at the configurable **checkinterval** in seconds.
+
+Yes, this will not deal with distributed denial-of-service attacks
+==================================================================
+
+But it will deal with simple DOS ones, but the concept is associated with DDOS whereas DOS is about the classic operating system from the 90's.
 
 Let's review Configuration
 ==========================
