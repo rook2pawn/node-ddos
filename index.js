@@ -14,6 +14,12 @@ var ddos = function(params) {
     if (!params) {
         params = _params;
     } else {
+        if ((params.burst !== undefined) && (params.limit === undefined)) {
+            params.limit = params.burst * 4;
+        }
+        if (params.limit != undefined) {
+            params.maxcount = params.limit * 2;
+        }
         Hash(_params).update(params)
         params = _params
     }
