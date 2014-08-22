@@ -46,7 +46,7 @@ var ddos = function(params) {
         if (params.testmode) {
             console.log('ddos: handle: beginning:', table)
         }
-        var host = req.connection.remoteAddress;
+        var host = req.connection.remoteAddress + "#" + req.headers['user-agent']
         if (!table[host])
             table[host] = { count : 1, expiry : 1 }
         else {
@@ -61,7 +61,7 @@ var ddos = function(params) {
             }
         }
         if (table[host].count > params.limit) {
-            console.log('ddos: denied: entry:', table[host])
+            console.log('ddos: denied: entry:', host, table[host])
             if (params.testmode) {
                 response.json(table[host]).status(500).pipe(res)
             } else {
