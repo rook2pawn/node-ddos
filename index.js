@@ -11,6 +11,8 @@ var ddos = function(params) {
     _params.checkinterval = 1;
     _params.errormessage = 'Error';
     _params.testmode = false;
+    _params.silent = false;
+    _params.silentStart = false;
     if (!params) {
         params = _params;
     } else {
@@ -23,7 +25,8 @@ var ddos = function(params) {
         Hash(_params).update(params)
         params = _params
     }
-    console.log("ddos: starting params: ", params)
+    if (!params.silentStart)
+        console.log("ddos: starting params: ", params)
     var table = {}
     var update = function() {
         //console.log("ddos: update", table)
@@ -61,7 +64,8 @@ var ddos = function(params) {
             }
         }
         if (table[host].count > params.limit) {
-            console.log('ddos: denied: entry:', host, table[host])
+            if (!params.silent)
+                console.log('ddos: denied: entry:', host, table[host])
             if (params.testmode) {
                 response.json(table[host]).status(500).pipe(res)
             } else {
