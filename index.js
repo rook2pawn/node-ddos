@@ -46,7 +46,7 @@ var ddos = function(params) {
         if (params.testmode) {
             console.log('ddos: handle: beginning:', table)
         }
-        var host = req.connection.remoteAddress + "#" + req.headers['user-agent']
+        var host = (req.headers['x-forwarded-for'] || req.connection.remoteAddress) + "#" + req.headers['user-agent']
         if (!table[host])
             table[host] = { count : 1, expiry : 1 }
         else {
