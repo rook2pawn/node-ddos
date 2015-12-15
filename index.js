@@ -75,6 +75,39 @@ var ddos = function(params) {
             console.log('ddos: handle: end:', table)
         }
     }
+    this.koa = function *(next) {
+        if (params.testmode) {
+            console.log('ddos: handle: beginning:', table)
+        }
+        var host = this.request.ip + "#" + this.request.headers['user-agent']
+        if (!table[host])
+            table[host] = { count : 1, expiry : 1 }
+        else {
+            table[host].count++
+            if (table[host].count > params.maxcount) 
+                table[host].count = params.maxcount
+            if (table[host].count > params.burst) {
+                if (table[host].expiry < params.maxexpiry) 
+                    table[host].expiry = Math.min(params.maxexpiry,table[host].expiry * 2)
+            } else {
+                table[host].expiry = 1;
+            }
+        }
+        if (table[host].count > params.limit) {
+            console.log('ddos: denied: entry:', host, table[host])
+            if (params.testmode) {
+                response.json(table[host]).status(500).pipe(res)
+            } else {
+                res.writeHead(500);
+                res.end(params.errormessage);
+            }
+        } else {         
+          yield next
+        }
+        if (params.testmode) {
+            console.log('ddos: handle: end:', table)
+        }
+    }
     this.express = handle;
     this.middleware = handle;
     this.params = params;

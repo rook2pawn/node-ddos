@@ -2,15 +2,42 @@ Configurable Denial-Of-Service prevention for http services
 
 [![Build Status](https://travis-ci.org/rook2pawn/node-ddos.svg?branch=master)](https://travis-ci.org/rook2pawn/node-ddos)
 
+Supports
+========
 
-example
-=======
+    * Express 4+
+    * Koa, or 
+    * Any middleware stack that supports *next* 
+      e.g. fn (req,res,next)
+
+With Express
+============
 
     var Ddos = require('ddos')
     var ddos = new Ddos;
     var express = require('express')
     var app = express();
     app.use(ddos.express)
+
+With Koa 
+========
+
+    var Ddos = require('ddos')
+    var ddos = new Ddos;
+    var koa = require('koa')
+    var app = koa()
+    app.use(ddos.koa)
+
+
+Any Middleware Stack with fn(req,res,next)
+==========================================
+
+    var http = require('http')
+    var Ddos = require('ddos')
+    var ddos = new Ddos;
+    
+    http.createServer(ddos.handle)
+
 
 
 How does this ddos prevention module work?
@@ -47,6 +74,7 @@ Yes, this will not deal with distributed denial-of-service attacks
 
 But it will deal with simple DOS ones, but the concept is associated with DDOS whereas DOS is about the classic operating system from the 90's.
 
+
 Let's review Configuration
 ==========================
 
@@ -59,6 +87,7 @@ All of the configurations default to the following:
     _params.maxexpiry = 120;
     _params.checkinterval = 1;
     _params.errormessage = 'Error';
+
 
 params.limit 
 ------------
@@ -91,3 +120,17 @@ params.errormessage
 -------------------
 
 When a request is denied, the user receives a 500 and the error message.
+
+
+
+TODO
+====
+
+Looking for a more advanced Koa test!
+
+
+
+Contribute
+==========
+
+Contributions welcome!
