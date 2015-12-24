@@ -2,8 +2,10 @@ var http = require('http');
 var express = require('express')
 var request = require('request');
 var response = require('response')
-var Ddos = require('../'); var ddos = new Ddos;
-var app = express(); app.use(ddos.express)
+var Ddos = require('../');
+var ddos = new Ddos;
+var app = express();
+app.use(ddos.express)
 var server = http.createServer(app);
 
 server.listen(5050);

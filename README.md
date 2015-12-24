@@ -87,6 +87,10 @@ All of the configurations default to the following:
     _params.maxexpiry = 120;
     _params.checkinterval = 1;
     _params.errormessage = 'Error';
+    _params.testmode = false;
+    _params.silent = false;
+    _params.silentStart = false;
+    _params.responseStatus = 429;
 
 
 params.limit 
@@ -119,7 +123,12 @@ checkinterval is the seconds between updating the internal table.
 params.errormessage
 -------------------
 
-When a request is denied, the user receives a 500 and the error message.
+When a request is denied, the user receives a 429 and the error message.
+
+params.responseStatus
+-------------------
+
+By default HTTP status code 429 (Too Many Requests) are sent in response.
 
 
 
