@@ -1,9 +1,11 @@
 var http = require('http');
-var express = require('express')
+var express = require('express');
 var request = require('request');
-var response = require('response')
-var Ddos = require('../'); var ddos = new Ddos({burst:3,limit:4,testmode:true})
-var app = express(); app.use(ddos.express)
+var response = require('response');
+var Ddos = require('../');
+var ddos = new Ddos({burst:3,limit:4,testmode:true});
+var app = express();
+app.use(ddos.express);
 var server = http.createServer(app);
 
 var QL = require('queuelib')
@@ -59,7 +61,7 @@ tape('count and expiry test', function(t) {
         request.get({url:'http://localhost:5050/article', json:true}, function(err, resp, body) {
             var key = Object.keys(ddos.table)[0]
             t.deepEqual(ddos.table[key], {count:5, expiry:4})
-            t.equal(resp.statusCode, 500, 'should be 500')        
+            t.equal(resp.statusCode, 429, 'should be 429')
             t.equal(body.count, 5, 'should be 5')        
             lib.done()
         })

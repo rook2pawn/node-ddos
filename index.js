@@ -3,7 +3,7 @@ var response = require('response')
 var ddos = function(params) {
     // burst, maxexpiry, checkinterval is in seconds
     // limit is the maximum count
-    var _params = {}
+    var _params = {};
     _params.maxcount = 30;
     _params.burst = 5;
     _params.limit = _params.burst * 4;  
@@ -13,6 +13,7 @@ var ddos = function(params) {
     _params.testmode = false;
     _params.silent = false;
     _params.silentStart = false;
+    _params.responseStatus = 429;
     if (!params) {
         params = _params;
     } else {
@@ -67,9 +68,9 @@ var ddos = function(params) {
             if (!params.silent)
                 console.log('ddos: denied: entry:', host, table[host])
             if (params.testmode) {
-                response.json(table[host]).status(500).pipe(res)
+                response.json(table[host]).status(params.responseStatus).pipe(res)
             } else {
-                res.writeHead(500);
+                res.writeHead(params.responseStatus);
                 res.end(params.errormessage);
             }
         } else {         
@@ -100,9 +101,9 @@ var ddos = function(params) {
         if (table[host].count > params.limit) {
             console.log('ddos: denied: entry:', host, table[host])
             if (params.testmode) {
-                response.json(table[host]).status(500).pipe(res)
+                response.json(table[host]).status(params.responseStatus).pipe(res)
             } else {
-                res.writeHead(500);
+                res.writeHead(params.responseStatus);
                 res.end(params.errormessage);
             }
         } else {         
