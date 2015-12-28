@@ -2,6 +2,12 @@ Configurable Denial-Of-Service prevention for http services
 
 [![Build Status](https://travis-ci.org/rook2pawn/node-ddos.svg?branch=master)](https://travis-ci.org/rook2pawn/node-ddos)
 
+
+Features
+========
+
+    * support the X-Forwarded-For header in a reverse proxy request 
+
 Supports
 ========
 
