@@ -6,6 +6,8 @@ Configurable Denial-Of-Service prevention for http services
 Features
 ========
 
+[![Join the chat at https://gitter.im/rook2pawn/node-ddos](https://badges.gitter.im/rook2pawn/node-ddos.svg)](https://gitter.im/rook2pawn/node-ddos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
     * support the X-Forwarded-For header in a reverse proxy request 
 
 Supports
