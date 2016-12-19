@@ -76,6 +76,8 @@ tape('post test', function(t) {
         function(lib) {
             lib.done()
             t.end()
+            server.close()
+            ddos.stop()
         }
     ],
     100)
