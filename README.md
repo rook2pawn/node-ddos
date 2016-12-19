@@ -86,6 +86,11 @@ But it will deal with simple DOS ones, but the concept is associated with DDOS w
 Let's review Configuration
 ==========================
 
+To override any configuration option, simply specify it at construction time.
+
+    var Ddos = require('ddos');
+    var ddos = new Ddos({burst:3,limit:4,testmode:true,whitelist:['74.125.224.72']});
+
 Let's go over the configuration options to help illustrate how this module works.
 All of the configurations default to the following:
 
@@ -96,6 +101,7 @@ All of the configurations default to the following:
     params.checkinterval = 1;
     params.trustProxy = true;
     params.includeUserAgent = true;
+    params.whitelist = [];
     params.errormessage = 'Error';
     params.testmode = false;
     params.silent = false;
@@ -142,6 +148,21 @@ params.includeUserAgent
 
 Defaults to true. If true we include the user agent as part of identifying a unique user. If false, then we only use IP. If set to false
 this can lead to an entire block being banned unintentionally. Included to leave it up to the developer how they want to use it.
+
+
+params.whitelist
+----------------
+
+Defaults to empty list. Specify the IP's or addresses you would like to whitelist
+
+    var Ddos = require('ddos');
+    var ddos = new Ddos({whitelist:['74.125.224.72', '216.239.63.255']});
+
+Whitelisted IP's bypass all table checks. If the address in question is in IPV6 form, simply enable testmode
+
+    var ddos = new Ddos({whitelist:['74.125.224.72', '216.239.63.255'], testmode:true});
+
+and see the exact form of the address you want to whitelist. See this [link on stackoverflow about IPv6 addresses](http://stackoverflow.com/questions/29411551/express-js-req-ip-is-returning-ffff127-0-0-1)
 
 
 params.errormessage

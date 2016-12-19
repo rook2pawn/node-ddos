@@ -1,10 +1,10 @@
 {
   "name": "ddos",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/test-post.js && tape test/test-express.js && mocha --harmony test/test-koa.js"
+    "test": "tape test/test-whitelist.js && tape test/test-post.js && tape test/test-express.js && mocha --harmony test/test-koa.js"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "hashish": "",
-    "response": "https://github.com/mikeal/response/archive/master.tar.gz"
+    "response": ""
   }
 }

@@ -11,6 +11,7 @@ var ddos = function(params) {
     _params.checkinterval = 1;
     _params.trustProxy = true;
     _params.includeUserAgent = true;
+    _params.whitelist = [];
     _params.errormessage = 'Error';
     _params.testmode = false;
     _params.silent = false;
@@ -51,7 +52,16 @@ var ddos = function(params) {
         if (params.testmode) {
             console.log('ddos: handle: beginning:', table)
         }
-        var host = params.trustProxy ? (req.headers['x-forwarded-for'] || req.connection.remoteAddress) : req.connection.remoteAddress;
+        var address = params.trustProxy ? (req.headers['x-forwarded-for'] || req.connection.remoteAddress) : req.connection.remoteAddress;
+        if (params.testmode) {
+            console.log("Address:", address);
+        }
+        if (params.whitelist.indexOf(address) != -1) {
+            next();
+            return;
+        }
+        var host = address;
+
         if (params.includeUserAgent)
             host = host.concat("#" + req.headers['user-agent']);
         if (!table[host])
