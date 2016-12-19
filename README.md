@@ -89,16 +89,18 @@ Let's review Configuration
 Let's go over the configuration options to help illustrate how this module works.
 All of the configurations default to the following:
 
-    _params.maxcount = 30;
-    _params.burst = 5;
-    _params.limit = _params.burst * 4;  
-    _params.maxexpiry = 120;
-    _params.checkinterval = 1;
-    _params.errormessage = 'Error';
-    _params.testmode = false;
-    _params.silent = false;
-    _params.silentStart = false;
-    _params.responseStatus = 429;
+    params.maxcount = 30;
+    params.burst = 5;
+    params.limit = _params.burst * 4;  
+    params.maxexpiry = 120;
+    params.checkinterval = 1;
+    params.trustProxy = true;
+    params.includeUserAgent = true;
+    params.errormessage = 'Error';
+    params.testmode = false;
+    params.silent = false;
+    params.silentStart = false;
+    params.responseStatus = 429;
 
 
 params.limit 
@@ -127,6 +129,20 @@ params.checkinterval
 --------------------
 
 checkinterval is the seconds between updating the internal table. 
+
+params.trustProxy
+-----------------
+
+Defaults to true. If true then we use the x-forwarded-for header, otherwise we use the remote address.
+
+    var host = _params.trustProxy ? (req.headers['x-forwarded-for'] || req.connection.remoteAddress) : req.connection.remoteAddress
+
+params.includeUserAgent
+------------------------
+
+Defaults to true. If true we include the user agent as part of identifying a unique user. If false, then we only use IP. If set to false
+this can lead to an entire block being banned unintentionally. Included to leave it up to the developer how they want to use it.
+
 
 params.errormessage
 -------------------

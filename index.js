@@ -9,6 +9,8 @@ var ddos = function(params) {
     _params.limit = _params.burst * 4;  
     _params.maxexpiry = 120;
     _params.checkinterval = 1;
+    _params.trustProxy = true;
+    _params.includeUserAgent = true;
     _params.errormessage = 'Error';
     _params.testmode = false;
     _params.silent = false;
@@ -42,7 +44,6 @@ var ddos = function(params) {
     var timer = setInterval(update,params.checkinterval*1000) 
     this.stop = function() {
         if (timer) {
-            //console.log("ddos: stopping", timer)
             clearInterval(timer)
         }
     }
@@ -50,7 +51,9 @@ var ddos = function(params) {
         if (params.testmode) {
             console.log('ddos: handle: beginning:', table)
         }
-        var host = (req.headers['x-forwarded-for'] || req.connection.remoteAddress) + "#" + req.headers['user-agent']
+        var host = params.trustProxy ? (req.headers['x-forwarded-for'] || req.connection.remoteAddress) : req.connection.remoteAddress;
+        if (params.includeUserAgent)
+            host = host.concat("#" + req.headers['user-agent']);
         if (!table[host])
             table[host] = { count : 1, expiry : 1 }
         else {
