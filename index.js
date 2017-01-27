@@ -1,22 +1,10 @@
-var Hash = require('hashish')
-var response = require('response')
+var Hash = require('hashish');
+var response = require('response');
+var defaultParams = require('./defaults')
 var ddos = function(params) {
     // burst, maxexpiry, checkinterval is in seconds
     // limit is the maximum count
-    var _params = {};
-    _params.maxcount = 30;
-    _params.burst = 5;
-    _params.limit = _params.burst * 4;  
-    _params.maxexpiry = 120;
-    _params.checkinterval = 1;
-    _params.trustProxy = true;
-    _params.includeUserAgent = true;
-    _params.whitelist = [];
-    _params.errormessage = 'Error';
-    _params.testmode = false;
-    _params.silent = false;
-    _params.silentStart = false;
-    _params.responseStatus = 429;
+    var _params = defaultParams;
     if (!params) {
         params = _params;
     } else {

@@ -70,8 +70,7 @@ tape('count and expiry test', function(t) {
             lib.done()
             t.end()
         }
-    ],
-    100)
+    ])
 })
 
 tape('then', function(t) {

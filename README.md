@@ -3,55 +3,49 @@ Configurable Denial-Of-Service prevention for http services
 [![Build Status](https://travis-ci.org/rook2pawn/node-ddos.svg?branch=master)](https://travis-ci.org/rook2pawn/node-ddos)
 
 
-Features
-========
+## Features
 
 [![Join the chat at https://gitter.im/rook2pawn/node-ddos](https://badges.gitter.im/rook2pawn/node-ddos.svg)](https://gitter.im/rook2pawn/node-ddos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
     * support the X-Forwarded-For header in a reverse proxy request 
 
-Supports
-========
+## Supports
 
     * Express 4+
     * Koa, or 
     * Any middleware stack that supports *next* 
       e.g. fn (req,res,next)
 
-With Express
-============
+### With Express
 
     var Ddos = require('ddos')
+    var express = require('express')    
     var ddos = new Ddos;
-    var express = require('express')
     var app = express();
     app.use(ddos.express)
 
-With Koa 
-========
+### With Koa 
 
     var Ddos = require('ddos')
+    var koa = require('koa')    
     var ddos = new Ddos;
-    var koa = require('koa')
     var app = koa()
     app.use(ddos.koa)
 
 
-Any Middleware Stack with fn(req,res,next)
-==========================================
+### With Router-Middleware
 
-    var http = require('http')
+    var Router = require('router-middleware');
     var Ddos = require('ddos')
+
     var ddos = new Ddos;
-    
-    http.createServer(ddos.handle)
+    var app = Router();
+    app.use(ddos);    
 
 
+## How does this ddos prevention module work?
 
-How does this ddos prevention module work?
-==========================================
-
-Every request marks the internal table.
+Every request marks the internal table and increments the *count*.
 This is how an entry in the table managed by this module looks
 
     { host : <ip address>, count: 1, expiry: 1 }
@@ -72,19 +66,16 @@ Every time the internal table is checked, the expiration goes down by the time e
 
 The only way for a user who has denied requests to continue is for them to let the expiration time pass, and when expiration hits 0, the entry is deleted from the table, and new requests are allowed like normal.
 
-Processing and Memory Usage by this module
-==========================================
+## Processing and Memory Usage by this module
 
 There is only ONE table, and within it only one small entry per IP, and that entry is transient and will be deleted within normal parameters. The table itself is combed over at the configurable **checkinterval** in seconds.
 
-Yes, this will not deal with distributed denial-of-service attacks
-==================================================================
+## Yes, this will not deal with distributed denial-of-service attacks
 
 But it will deal with simple DOS ones, but the concept is associated with DDOS whereas DOS is about the classic operating system from the 90's.
 
 
-Let's review Configuration
-==========================
+## Let's review Configuration
 
 To override any configuration option, simply specify it at construction time.
 
@@ -108,50 +99,45 @@ All of the configurations default to the following:
     params.silentStart = false;
     params.responseStatus = 429;
 
+### maxcount
 
-params.limit 
-------------
+When the *count* exceeds the *limit* and then the *maxcount*, the count is reduced to the *maxcount*. The maxcount is simply is the maximum amount of "punishment" that could be applied to a denial time-out.  
 
-limit is the number of maximum counts allowed.
-If the count exceeds the limit, then the request is denied.
+### limit 
+
+limit is the number of maximum counts allowed. If the count exceeds the limit, then the request is denied.
 Recommended limit is to use a multiple of the number of bursts.
 
 
-params.burst
-------------
+### burst
 
 Burst is the number or amount of allowable burst requests before the client starts being penalized.
 When the client is penalized, the expiration is increased by twice the previous expiration.
 
 
-params.maxexpiry
-----------------
+### maxexpiry
 
 maxexpiry is the seconds of maximum amount of expiration time. 
 In order for the user to use whatever service you are providing again, they have to wait through the expiration time.
 
 
-params.checkinterval
---------------------
+### checkinterval
 
 checkinterval is the seconds between updating the internal table. 
 
-params.trustProxy
------------------
+### trustProxy
 
 Defaults to true. If true then we use the x-forwarded-for header, otherwise we use the remote address.
 
     var host = _params.trustProxy ? (req.headers['x-forwarded-for'] || req.connection.remoteAddress) : req.connection.remoteAddress
 
-params.includeUserAgent
-------------------------
+### includeUserAgent
 
 Defaults to true. If true we include the user agent as part of identifying a unique user. If false, then we only use IP. If set to false
 this can lead to an entire block being banned unintentionally. Included to leave it up to the developer how they want to use it.
 
 
-params.whitelist
-----------------
+### whitelist
 
 Defaults to empty list. Specify the IP's or addresses you would like to whitelist
 
@@ -165,13 +151,11 @@ Whitelisted IP's bypass all table checks. If the address in question is in IPV6 
 and see the exact form of the address you want to whitelist. See this [link on stackoverflow about IPv6 addresses](http://stackoverflow.com/questions/29411551/express-js-req-ip-is-returning-ffff127-0-0-1)
 
 
-params.errormessage
--------------------
+### errormessage
 
 When a request is denied, the user receives a 429 and the error message.
 
-params.responseStatus
--------------------
+### responseStatus
 
 By default HTTP status code 429 (Too Many Requests) are sent in response.
 

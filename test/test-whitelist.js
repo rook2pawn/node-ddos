@@ -30,55 +30,54 @@ app.post('/article',a,b,c);
 
 var tape = require('tape')
 tape('post test', function(t) {
-    t.plan(11)
-    q.series([
-        function(lib) {
-        request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
-            var key = Object.keys(ddos.table)[0]
-            t.equal(ddos.table[key],undefined);
-            t.deepEqual(body, {foo:84});
-            lib.done()
-        })
-        },
-        function(lib) {
-        request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
-            var key = Object.keys(ddos.table)[0]
-            t.equal(ddos.table[key],undefined);
-            t.deepEqual(body, {foo:84});
-            lib.done()
-        })
-        },
-        function(lib) {
-        request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
-            var key = Object.keys(ddos.table)[0]
-            t.equal(ddos.table[key],undefined);
-            t.deepEqual(body, {foo:84});            
-            lib.done()
-        })
-        },
-        function(lib) {
-        request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
-            var key = Object.keys(ddos.table)[0]
-            t.equal(ddos.table[key],undefined);
-            t.deepEqual(body, {foo:84});     
-            lib.done()
-        })
-        },
-        function(lib) {
-        request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
-            var key = Object.keys(ddos.table)[0]
-            t.equal(ddos.table[key],undefined);
-            t.equal(resp.statusCode, 200, 'should be 200');
-            t.deepEqual(body, {foo:84});                 
-            lib.done()
-        })
-        },
-        function(lib) {
-            lib.done()
-            t.end()
-            server.close()
-            ddos.stop()
-        }
-    ],
-    100)
+  t.plan(11)
+  q.series([
+    function(lib) {
+    request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
+        var key = Object.keys(ddos.table)[0]
+        t.equal(ddos.table[key],undefined);
+        t.deepEqual(body, {foo:84});
+        lib.done()
+    })
+    },
+    function(lib) {
+    request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
+        var key = Object.keys(ddos.table)[0]
+        t.equal(ddos.table[key],undefined);
+        t.deepEqual(body, {foo:84});
+        lib.done()
+    })
+    },
+    function(lib) {
+    request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
+        var key = Object.keys(ddos.table)[0]
+        t.equal(ddos.table[key],undefined);
+        t.deepEqual(body, {foo:84});            
+        lib.done()
+    })
+    },
+    function(lib) {
+    request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
+        var key = Object.keys(ddos.table)[0]
+        t.equal(ddos.table[key],undefined);
+        t.deepEqual(body, {foo:84});     
+        lib.done()
+    })
+    },
+    function(lib) {
+    request.post({url:'http://localhost:5050/article', json:true, body:{num:42}}, function(err, resp, body) {
+        var key = Object.keys(ddos.table)[0]
+        t.equal(ddos.table[key],undefined);
+        t.equal(resp.statusCode, 200, 'should be 200');
+        t.deepEqual(body, {foo:84});                 
+        lib.done()
+    })
+    },
+    function(lib) {
+        lib.done()
+        t.end()
+        server.close()
+        ddos.stop()
+    }
+  ])
 })

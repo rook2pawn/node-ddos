@@ -79,6 +79,5 @@ tape('post test', function(t) {
             server.close()
             ddos.stop()
         }
-    ],
-    100)
+    ])
 })
