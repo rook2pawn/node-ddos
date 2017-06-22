@@ -1,4 +1,3 @@
-var Hash = require('hashish');
 var Hoek = require('hoek');
 var response = require('response');
 var defaultParams = require('./lib/defaults')
