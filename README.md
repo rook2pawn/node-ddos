@@ -2,6 +2,25 @@ Configurable Denial-Of-Service prevention for http services
 
 [![Build Status](https://travis-ci.org/rook2pawn/node-ddos.svg?branch=master)](https://travis-ci.org/rook2pawn/node-ddos)
 
+# A Quick Overview
+
+    var Ddos = require('ddos')
+    var express = require('express')    
+    var ddos = new Ddos({burst:10, limit:15})
+    var app = express();
+    app.use(ddos.express);
+
+* **Rule 1** Every request per user increments an internal **count**. When the count exceeds the **limit**, the requests are denied with a HTTP 429 Too Many Requests.
+
+* **Rule 2** The *only* way for count to go away, is for an internal expiration time to expire, called the *expiry*, and is measured in seconds.
+
+The first request comes in and the expiry is set to 1 second. If 1 second passes and no additional requests are made, then the entry is removed
+from the internal table. In fact, there can be up to **burst** amount of requests made and the **expiry time will not change**.
+The only way the expiry goes up is when a request comes, the count goes up, and then if the count *exceeds* the burst amount (greater than, not greater than or equal to), then the expiry goes up to twice its previous value. 
+
+Every time the table is checked (defaults to 1 second, configurable by the **checkinterval** setting), the expiry goes down by that amount of time.
+Now we loop back to **Rule 2** when that when expiry is less than or equal to 0, then that entry is removed along with the count.
+
 
 ## Features
 
@@ -11,12 +30,13 @@ Configurable Denial-Of-Service prevention for http services
 
 ## Supports
 
+    * HapiJS
     * Express 4+
     * Koa, or 
     * Any middleware stack that supports *next* 
       e.g. fn (req,res,next)
 
-### With Express
+### With [Express](https://github.com/expressjs/expressjs.com "Express"
 
     var Ddos = require('ddos')
     var express = require('express')    
@@ -24,16 +44,24 @@ Configurable Denial-Of-Service prevention for http services
     var app = express();
     app.use(ddos.express)
 
-### With Koa 
+
+### With [HapiJS](https://hapijs.com/ "HapiJS")
+    
+    var Ddos = require('ddos').hapi;
+    var 
+    
+
+### With [Koa](http://koajs.com "KoaJS") 
 
     var Ddos = require('ddos')
     var koa = require('koa')    
     var ddos = new Ddos;
-    var app = koa()
-    app.use(ddos.koa)
+
+    var app = new koa;
+    app.use(ddos.koa.bind(ddos)) // be sure to bind ddos as koa rebinds the context
 
 
-### With Router-Middleware
+### With [Router-Middleware](https://github.com/rook2pawn/router-middleware "Router Middleware")
 
     var Router = require('router-middleware');
     var Ddos = require('ddos')
@@ -158,13 +186,6 @@ When a request is denied, the user receives a 429 and the error message.
 ### responseStatus
 
 By default HTTP status code 429 (Too Many Requests) are sent in response.
-
-
-
-TODO
-====
-
-Looking for a more advanced Koa test!
 
 
 
