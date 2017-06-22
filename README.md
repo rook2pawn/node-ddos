@@ -36,7 +36,7 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
     * Any middleware stack that supports *next* 
       e.g. fn (req,res,next)
 
-### With [Express](https://github.com/expressjs/expressjs.com "Express"
+### With [Express](https://github.com/expressjs/expressjs.com "Express")
 
     var Ddos = require('ddos')
     var express = require('express')    
@@ -46,10 +46,13 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
 
 
 ### With [HapiJS](https://hapijs.com/ "HapiJS")
-    
-    var Ddos = require('ddos').hapi;
-    var 
-    
+  
+    var Ddos = require('ddos')
+    var Hapi = require('hapi');
+
+    var ddos = new Ddos;
+    const server = new Hapi.Server();
+    server.ext('onRequest', ddos.hapi.bind(ddos));
 
 ### With [Koa](http://koajs.com "KoaJS") 
 
