@@ -108,14 +108,9 @@ ddos.prototype.handle = function(req,res,next) {
 
 ddos.prototype.express = ddos.prototype.handle;
 
-ddos.prototype.koa = async function (ctx, next) {
+ddos.prototype.koa = function() {
 
-  var req = ctx.req;
-  var res = ctx.res;
-  var table = this.table;
-  const params = this.params;
-
-  handle(params, table, req, res, next);
+  return require('./lib/koa')(this.params,this.table,handle);
 };
 
 ddos.prototype.hapi = function (request, reply) {

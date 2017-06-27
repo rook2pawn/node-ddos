@@ -61,7 +61,7 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
     var ddos = new Ddos;
 
     var app = new koa;
-    app.use(ddos.koa.bind(ddos)) // be sure to bind ddos as koa rebinds the context
+    app.use(ddos.koa().bind(ddos)) // be sure to bind ddos as koa rebinds the context
 
 
 ### With [Router-Middleware](https://github.com/rook2pawn/router-middleware "Router Middleware")
