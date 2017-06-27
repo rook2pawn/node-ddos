@@ -1,6 +1,6 @@
 {
   "name": "ddos",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "limiting"
   ],
   "author": "David Wee <rook2pawn@gmail.com> (http://rook2pawn.com)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rook2pawn/node-ddos/issues"
   },

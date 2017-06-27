@@ -196,3 +196,10 @@ Contribute
 ==========
 
 Contributions welcome!
+
+
+LICENSE
+=======
+
+MIT
+
