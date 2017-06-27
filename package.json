@@ -13,7 +13,11 @@
   "keywords": [
     "ddos",
     "rate",
-    "limiting"
+    "limiting",
+    "koa",
+    "express",
+    "hapijs",
+    "hapi"
   ],
   "author": "David Wee <rook2pawn@gmail.com> (http://rook2pawn.com)",
   "license": "MIT",
