@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "hoek": "^4.1.1",
-    "response": "^0.18.1",
+    "response": "git@github.com:mikeal/response.git#v0.18.1",
     "semver": "^5.3.0"
   }
 }
