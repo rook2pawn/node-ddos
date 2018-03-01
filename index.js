@@ -1,11 +1,10 @@
-const Hoek = require("hoek");
 const lib = require("./lib");
 const defaultParams = require("./lib/defaults");
 
 var ddos = function(params) {
   if (!params) params = {};
 
-  params = Hoek.applyToDefaults(defaultParams, params);
+  params = Object.assign({}, defaultParams, params);
 
   if (params.burst !== undefined && params.limit === undefined) {
     params.limit = params.burst * 4;
