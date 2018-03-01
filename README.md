@@ -5,7 +5,7 @@ Configurable Denial-Of-Service prevention for http services
 # A Quick Overview
 
     var Ddos = require('ddos')
-    var express = require('express')    
+    var express = require('express')
     var ddos = new Ddos({burst:10, limit:15})
     var app = express();
     app.use(ddos.express);
@@ -16,7 +16,7 @@ Configurable Denial-Of-Service prevention for http services
 
 The first request comes in and the expiry is set to 1 second. If 1 second passes and no additional requests are made, then the entry is removed
 from the internal table. In fact, there can be up to **burst** amount of requests made and the **expiry time will not change**.
-The only way the expiry goes up is when a request comes, the count goes up, and then if the count *exceeds* the burst amount (greater than, not greater than or equal to), then the expiry goes up to twice its previous value. 
+The only way the expiry goes up is when a request comes, the count goes up, and then if the count *exceeds* the burst amount (greater than, not greater than or equal to), then the expiry goes up to twice its previous value.
 
 Every time the table is checked (defaults to 1 second, configurable by the **checkinterval** setting), the expiry goes down by that amount of time.
 Now we loop back to **Rule 2** when that when expiry is less than or equal to 0, then that entry is removed along with the count.
@@ -26,27 +26,27 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
 
 [![Join the chat at https://gitter.im/rook2pawn/node-ddos](https://badges.gitter.im/rook2pawn/node-ddos.svg)](https://gitter.im/rook2pawn/node-ddos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-    * support the X-Forwarded-For header in a reverse proxy request 
+    * support the X-Forwarded-For header in a reverse proxy request
 
 ## Supports
 
     * HapiJS
     * Express 4+
-    * Koa, or 
-    * Any middleware stack that supports *next* 
+    * Koa, or
+    * Any middleware stack that supports *next*
       e.g. fn (req,res,next)
 
 ### With [Express](https://github.com/expressjs/expressjs.com "Express")
 
     var Ddos = require('ddos')
-    var express = require('express')    
+    var express = require('express')
     var ddos = new Ddos;
     var app = express();
     app.use(ddos.express)
 
 
 ### With [HapiJS](https://hapijs.com/ "HapiJS")
-  
+
     var Ddos = require('ddos')
     var Hapi = require('hapi');
 
@@ -54,10 +54,10 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
     const server = new Hapi.Server();
     server.ext('onRequest', ddos.hapi.bind(ddos));
 
-### With [Koa](http://koajs.com "KoaJS") 
+### With [Koa](http://koajs.com "KoaJS")
 
     var Ddos = require('ddos')
-    var koa = require('koa')    
+    var koa = require('koa')
     var ddos = new Ddos;
 
     var app = new koa;
@@ -71,7 +71,7 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
 
     var ddos = new Ddos;
     var app = Router();
-    app.use(ddos);    
+    app.use(ddos);
 
 
 ## How does this ddos prevention module work?
@@ -85,7 +85,7 @@ When a second request is made
 
     { host : <ip address>, count: 2, expiry: 1 }
 
-and the third 
+and the third
 
     { host : <ip address>, count: 3, expiry: 1 }
 
@@ -118,7 +118,7 @@ All of the configurations default to the following:
 
     params.maxcount = 30;
     params.burst = 5;
-    params.limit = _params.burst * 4;  
+    params.limit = _params.burst * 4;
     params.maxexpiry = 120;
     params.checkinterval = 1;
     params.trustProxy = true;
@@ -132,9 +132,9 @@ All of the configurations default to the following:
 
 ### maxcount
 
-When the *count* exceeds the *limit* and then the *maxcount*, the count is reduced to the *maxcount*. The maxcount is simply is the maximum amount of "punishment" that could be applied to a denial time-out.  
+When the *count* exceeds the *limit* and then the *maxcount*, the count is reduced to the *maxcount*. The maxcount is simply is the maximum amount of "punishment" that could be applied to a denial time-out.
 
-### limit 
+### limit
 
 limit is the number of maximum counts allowed. If the count exceeds the limit, then the request is denied.
 Recommended limit is to use a multiple of the number of bursts.
@@ -148,13 +148,13 @@ When the client is penalized, the expiration is increased by twice the previous 
 
 ### maxexpiry
 
-maxexpiry is the seconds of maximum amount of expiration time. 
+maxexpiry is the seconds of maximum amount of expiration time.
 In order for the user to use whatever service you are providing again, they have to wait through the expiration time.
 
 
 ### checkinterval
 
-checkinterval is the seconds between updating the internal table. 
+checkinterval is the seconds between updating the internal table.
 
 ### trustProxy
 
@@ -202,4 +202,3 @@ LICENSE
 =======
 
 MIT
-
