@@ -76,7 +76,7 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
 
 ## How does this ddos prevention module work?
 
-Every request marks the internal table and increments the *count*.
+Every request marks the internal table and increments the `count`.
 This is how an entry in the table managed by this module looks
 
     { host : <ip address>, count: 1, expiry: 1 }
@@ -130,14 +130,15 @@ All of the configurations default to the following:
     params.silentStart = false;
     params.responseStatus = 429;
 
-### maxcount
-
-When the *count* exceeds the *limit* and then the *maxcount*, the count is reduced to the *maxcount*. The maxcount is simply is the maximum amount of "punishment" that could be applied to a denial time-out.
-
 ### limit
 
-limit is the number of maximum counts allowed. If the count exceeds the limit, then the request is denied.
-Recommended limit is to use a multiple of the number of bursts.
+`limit` is the number of maximum counts allowed (do not confuse that with maxcount). `count` increments with each request.
+If the `count` exceeds the `limit`, then the request is denied. Recommended limit is to use a multiple of the number of bursts.
+
+
+### maxcount
+
+When the `count` exceeds the `limit` and then the `maxcount`, the count is reduced to the `maxcount`. The maxcount is simply is the maximum amount of "punishment" that could be applied to a denial time-out.
 
 
 ### burst
