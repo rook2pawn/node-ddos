@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/test*.js"
+    "test": "istanbul cover -x 'lib/koa.js' tape test/test-*.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "body-parser": "",
     "express": "",
     "hapi": "^16.4.3",
+    "istanbul": "^0.4.5",
     "koa": "",
     "queuelib": "",
     "request": "",
