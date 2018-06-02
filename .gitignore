@@ -4,3 +4,4 @@ node_modules
 ## Directory-based project format:
 .idea/
 coverage/
+.nyc_output
