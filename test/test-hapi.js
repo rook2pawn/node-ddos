@@ -1,7 +1,6 @@
 var tape = require("tape");
 var Hapi = require("hapi");
 var request = require("request");
-var response = require("response");
 var QL = require("queuelib");
 
 var Ddos = require("../");

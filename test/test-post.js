@@ -2,7 +2,6 @@ var http = require("http");
 var express = require("express");
 var bodyParser = require("body-parser");
 var request = require("request");
-var response = require("response");
 var Ddos = require("../");
 var ddos = new Ddos({ burst: 3, limit: 4, testmode: true });
 var app = express();
@@ -24,7 +23,7 @@ var b = function(req, res, next) {
 };
 var c = function(req, res, next) {
   var num = req.body.num * 2;
-  response.json({ foo: num }).pipe(res);
+  res.end(JSON.stringify({foo:num}))
 };
 app.post("/article", a, b, c);
 

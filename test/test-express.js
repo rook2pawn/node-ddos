@@ -1,7 +1,6 @@
 var tape = require("tape");
 var express = require("express");
 var request = require("supertest");
-var response = require("response");
 var QL = require("queuelib");
 
 var Ddos = require("../");
@@ -20,7 +19,8 @@ tape("count and expiry test", function(t) {
     next();
   };
   var c = function(req, res, next) {
-    response.json({ foo: "bar" }).pipe(res);
+    res.writeHead(200, {'Content-Type':'application/json'})
+    res.end(JSON.stringify({ foo: "bar" }))
   };
   app.get("/article", a, b, c);
 
