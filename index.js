@@ -5,14 +5,11 @@ var ddos = function(params) {
   if (!params) params = {};
 
   params = Object.assign({}, defaultParams, params);
+  params.maxcount = params.limit * 2;
 
-  if (params.burst !== undefined && params.limit === undefined) {
-    params.limit = params.burst * 4;
+  if (!params.silentStart) {
+    console.log("ddos: starting params: ", params);
   }
-  if (params.limit != undefined) {
-    params.maxcount = params.limit * 2;
-  }
-  if (!params.silentStart) console.log("ddos: starting params: ", params);
 
   this.table = {};
   this.timer = setInterval(this.update.bind(this), params.checkinterval * 1000);

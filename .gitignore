@@ -1,5 +1,7 @@
 node_modules
+.coveralls.yml
 
 ## Directory-based project format:
 .idea/
 coverage/
+.nyc_output

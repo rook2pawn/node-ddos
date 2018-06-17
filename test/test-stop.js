@@ -2,7 +2,6 @@ var http = require("http");
 var express = require("express");
 var bodyParser = require("body-parser");
 var request = require("request");
-var response = require("response");
 var QL = require("queuelib");
 var Ddos = require("../");
 var ddos = new Ddos();
@@ -25,7 +24,7 @@ tape("stop test", function(t) {
   };
   var c = function(req, res, next) {
     var num = req.body.num * 2;
-    response.json({ foo: num }).pipe(res);
+    res.end(JSON.stringify({foo:num}));
   };
   app.post("/article", a, b, c);
 
