@@ -36,5 +36,6 @@ ddos.prototype.hapi = function(request, reply) {
 
   lib._handle(params, table, req, res, next);
 };
+ddos.prototype.ipv4re = lib.ipv4re;
 
 module.exports = exports = ddos;
