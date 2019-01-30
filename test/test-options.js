@@ -71,3 +71,35 @@ tape("options - trustProxy ", function(t) {
       t.pass();
     });
 });
+
+
+tape("options - onDenial  ", function(t) {
+  t.plan(1);
+  const onDenial = function(req) {
+    t.pass();
+  }
+  const ddos = new Ddos({ limit: 2, onDenial });
+  const app = express();
+  app.use(ddos.express);
+  app.get("/user", (req,res) => {
+    console.log("Cupid")
+    res.status(200).json({name:'john'});
+  })
+
+  const doCall = function() {
+    console.log("Do call!")
+    return request(app)
+    .get('/user')
+  }
+
+  doCall()
+  .then(() => {
+    return doCall()
+  })
+  .then(() => {
+    return doCall()
+  })
+  .then((res) => {
+      ddos.end();
+  })
+});

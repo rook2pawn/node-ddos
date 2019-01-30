@@ -193,6 +193,9 @@ When a request is denied, the user receives a 429 and the error message.
 
 By default HTTP status code 429 (Too Many Requests) are sent in response.
 
+### onDenial
+
+If this callback is specified, it will be called with the `req` object on a denial. Useful for logging.
 
 
 Contribute
