@@ -40,41 +40,46 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
 
 ### With [Express](https://github.com/expressjs/expressjs.com "Express")
 
+```js
     var Ddos = require('ddos')
     var express = require('express')
     var ddos = new Ddos;
     var app = express();
     app.use(ddos.express)
-
+```
 
 ### With [HapiJS](https://hapijs.com/ "HapiJS")
 
+```js
     var Ddos = require('ddos')
     var Hapi = require('hapi');
 
     var ddos = new Ddos;
     const server = new Hapi.Server();
     server.ext('onRequest', ddos.hapi.bind(ddos));
+```
 
 ### With [Koa](http://koajs.com "KoaJS")
 
+```js
     var Ddos = require('ddos')
     var koa = require('koa')
     var ddos = new Ddos;
 
     var app = new koa;
     app.use(ddos.koa().bind(ddos)) // be sure to bind ddos as koa rebinds the context
-
+```
 
 ### With [Router-Middleware](https://github.com/rook2pawn/router-middleware "Router Middleware")
 
+```js
     var Router = require('router-middleware');
     var Ddos = require('ddos')
 
     var ddos = new Ddos;
     var app = Router();
     app.use(ddos);
-
+```
 
 ## How does this ddos prevention module work?
 
@@ -112,8 +117,10 @@ But it will deal with simple DOS ones, but the concept is associated with DDOS w
 
 To override any configuration option, simply specify it at construction time.
 
+```js
     var Ddos = require('ddos');
     var ddos = new Ddos({burst:3,limit:4,testmode:true,whitelist:['74.125.224.72']});
+```
 
 Let's go over the configuration options to help illustrate how this module works.
 All of the configurations default to the following:
@@ -163,7 +170,9 @@ checkinterval is the seconds between updating the internal table.
 
 Defaults to true. If true then we use the x-forwarded-for header, otherwise we use the remote address.
 
+```js
     var host = _params.trustProxy ? (req.headers['x-forwarded-for'] || req.connection.remoteAddress) : req.connection.remoteAddress
+```
 
 ### includeUserAgent
 
@@ -175,12 +184,16 @@ this can lead to an entire block being banned unintentionally. Included to leave
 
 Defaults to empty list. Specify the IP's or addresses you would like to whitelist
 
+```js
     var Ddos = require('ddos');
     var ddos = new Ddos({whitelist:['74.125.224.72', '216.239.63.255']});
+```
 
 Whitelisted IP's bypass all table checks. If the address in question is in IPV6 form, simply enable testmode
 
+```js
     var ddos = new Ddos({whitelist:['74.125.224.72', '216.239.63.255'], testmode:true});
+```
 
 and see the exact form of the address you want to whitelist. See this [link on stackoverflow about IPv6 addresses](http://stackoverflow.com/questions/29411551/express-js-req-ip-is-returning-ffff127-0-0-1)
 
@@ -197,6 +210,12 @@ By default HTTP status code 429 (Too Many Requests) are sent in response.
 
 If this callback is specified, it will be called with the `req` object on a denial. Useful for logging.
 
+```js
+  const onDenial = function(req) {
+    // log it
+  }
+  const ddos = new Ddos({ limit: 2, onDenial });
+```
 
 Contribute
 ==========
