@@ -197,6 +197,13 @@ Whitelisted IP's bypass all table checks. If the address in question is in IPV6 
 
 and see the exact form of the address you want to whitelist. See this [link on stackoverflow about IPv6 addresses](http://stackoverflow.com/questions/29411551/express-js-req-ip-is-returning-ffff127-0-0-1)
 
+### .addWhitelist(ip)
+
+Update whitelist while running.
+
+```js
+    ddos.addWhitelist('74.125.224.72')
+```
 
 ### errormessage
 

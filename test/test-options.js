@@ -13,22 +13,69 @@ tape("options - silentStart false", function(t) {
 
 tape("options - whitelist ", function(t) {
   t.plan(1);
-  const ddos = new Ddos({ testmode:true, whitelist:['127.0.0.1'], burst: 3, limit: 4 });
+  const ddos = new Ddos({ limit: 1, whitelist:['127.0.0.1']});
   const app = express();
+  let count = 0;
   app.use(ddos.express);
   app.get("/user", (req,res) => {
-    res.status(200).json({name:'john'});
+    count++;
+    return res.status(200).json({name:'john'});
   })
 
-  request(app)
+  const doCall = function(expect) {
+    return request(app)
     .get('/user')
-    .expect('Content-Type', /json/)
-    .expect('Content-Length', '15')
-    .expect(200)
-    .end(function(err, res) {
-      ddos.end();
-      t.pass();
-    });
+    .expect(expect)
+    .catch((e) => {
+      t.fail();
+    })
+  }
+
+  doCall(200)
+  .then(() => doCall(200))
+  .then(() => doCall(200))
+  .then(() => {
+    t.equals(count, 3);
+    ddos.end();
+  })
+
+});
+
+
+tape("method - addwhitelist ", function(t) {
+  t.plan(2);
+  const ddos = new Ddos({ limit: 1 });
+  const app = express();
+  let count = 0;
+  app.use(ddos.express);
+  app.get("/user", (req,res) => {
+    count++;
+    return res.status(200).json({name:'john'});
+  })
+
+  const doCall = function(expect) {
+    return request(app)
+    .get('/user')
+    .expect(expect)
+    .catch((e) => {
+      t.fail();
+    })
+  }
+
+  doCall(200)
+  .then(() => doCall(429))
+  .then(() => {
+    t.equals(count, 1);
+  })
+  .then(() => {
+    ddos.addWhitelist('127.0.0.1')
+    return doCall(200)
+  })
+  .then(() => {
+    t.equals(count,2);
+    ddos.end();
+  })
+
 });
 
 tape("options - includeUserAgent ", function(t) {
@@ -75,31 +122,28 @@ tape("options - trustProxy ", function(t) {
 
 tape("options - onDenial  ", function(t) {
   t.plan(1);
+  let count = 0;
   const onDenial = function(req) {
-    t.pass();
+    count++;
   }
-  const ddos = new Ddos({ limit: 2, onDenial });
+  const ddos = new Ddos({ limit: 1, onDenial });
   const app = express();
   app.use(ddos.express);
   app.get("/user", (req,res) => {
-    console.log("Cupid")
+    console.log("reply")
     res.status(200).json({name:'john'});
   })
 
   const doCall = function() {
-    console.log("Do call!")
     return request(app)
     .get('/user')
   }
 
   doCall()
-  .then(() => {
-    return doCall()
-  })
-  .then(() => {
-    return doCall()
-  })
+  .then(() => doCall())
+  .then(() => doCall())
   .then((res) => {
-      ddos.end();
+    t.equals(count, 2)
+    ddos.end();
   })
 });

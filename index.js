@@ -1,10 +1,10 @@
 const lib = require("./lib");
 const defaultParams = require("./lib/defaults");
 
-var ddos = function(params) {
+const ddos = function(params) {
   if (!params) params = {};
 
-  params = Object.assign({}, defaultParams, params);
+  params = Object.assign({}, defaultParams(), params);
   params.maxcount = params.limit * 2;
 
   if (!params.silentStart) {
@@ -18,6 +18,8 @@ var ddos = function(params) {
   this.params = params;
 };
 
+
+ddos.prototype.addWhitelist = lib.addWhitelist;
 ddos.prototype.stop = lib.stop;
 ddos.prototype.end = ddos.prototype.stop;
 ddos.prototype.update = lib.update;
