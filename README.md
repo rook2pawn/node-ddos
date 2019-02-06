@@ -1,6 +1,6 @@
 Configurable Denial-Of-Service prevention for http services
 
-![Stop Cat](stopcat.jpg)
+<img align="right" src="stopcat.jpg">
 
 [![Build Status](https://travis-ci.org/rook2pawn/node-ddos.svg?branch=master)](https://travis-ci.org/rook2pawn/node-ddos)
 
