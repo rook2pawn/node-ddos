@@ -3,14 +3,6 @@ const Ddos = require("../");
 const request = require('supertest');
 const express = require('express');
 
-tape("options - silentStart false", function(t) {
-  t.plan(1);
-  const ddos = new Ddos({ silentStart:false, burst: 3, limit: 4 });
-  t.pass();
-  ddos.end();
-});
-
-
 tape("options - whitelist ", function(t) {
   t.plan(1);
   const ddos = new Ddos({ limit: 1, whitelist:['127.0.0.1']});

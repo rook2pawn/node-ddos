@@ -8,7 +8,7 @@ const express = require('express');
 tape("localhost ", function(t) {
   t.plan(4);
 
-  const ddos = new Ddos({ silentStart: false, burst: 3, limit: 2 });
+  const ddos = new Ddos({ burst: 3, limit: 2 });
   t.equals("::ffff:127.0.0.1".match(ddos.ipv4re)[2], "127.0.0.1")
   t.equals("127.0.0.1".match(ddos.ipv4re)[2], "127.0.0.1")
   t.equals("32.45.32.65:12568".match(ddos.ipv4re)[2], "32.45.32.65:12568")

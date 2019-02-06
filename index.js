@@ -7,7 +7,7 @@ const ddos = function(params) {
   params = Object.assign({}, defaultParams(), params);
   params.maxcount = params.limit * 2;
 
-  if (!params.silentStart) {
+  if (params.testmode) {
     console.log("ddos: starting params: ", params);
   }
 

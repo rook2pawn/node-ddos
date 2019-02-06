@@ -5,7 +5,7 @@ const express = require('express');
 
 tape("maxcount ", function(t) {
   t.plan(1);
-  const ddos = new Ddos({ silentStart: false, burst: 3, limit: 2 });
+  const ddos = new Ddos({ burst: 3, limit: 2 });
   const app = express();
   app.use(ddos.express);
   app.get("/user", (req,res) => {

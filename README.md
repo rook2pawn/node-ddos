@@ -4,17 +4,36 @@ Configurable Denial-Of-Service prevention for http services
 
 [![Coverage Status](https://coveralls.io/repos/github/rook2pawn/node-ddos/badge.svg?branch=master)](https://coveralls.io/github/rook2pawn/node-ddos?branch=master)
 
+# install
+
+```
+    npm install --save ddos
+```
+
+# setup helper (new!)
+
+```
+    npm run setup-helper
+```
+
+Run `npm run setup-helper` and place the console side by side with your browser window and reload a few times and see how `burst` and `limit` are separate
+concepts. `burst` controls the expiry timer, and `limit` is what governs the actual denial. I'll make a video tutorial on this, but in the meantime, this should
+give you an intuitive sense of what's going on. Play with the limit and burst in the `setupHelper.js`.
+
+
 # A Quick Overview
 
+```js
     var Ddos = require('ddos')
     var express = require('express')
     var ddos = new Ddos({burst:10, limit:15})
     var app = express();
     app.use(ddos.express);
+```
 
 * **Rule 1** Every request per user increments an internal **count**. When the count exceeds the **limit**, the requests are denied with a HTTP 429 Too Many Requests.
 
-* **Rule 2** The *only* way for count to go away, is for an internal expiration time to expire, called the *expiry*, and is measured in seconds.
+* **Rule 2** The *only* way for count to go away, is for an internal expiration time to expire, called the **expiry**, and is measured in seconds. Every second, the expiry time will go down by one.
 
 The first request comes in and the expiry is set to 1 second. If 1 second passes and no additional requests are made, then the entry is removed
 from the internal table. In fact, there can be up to **burst** amount of requests made and the **expiry time will not change**.
@@ -135,9 +154,11 @@ All of the configurations default to the following:
     params.whitelist = [];
     params.errormessage = 'Error';
     params.testmode = false;
-    params.silent = false;
-    params.silentStart = false;
     params.responseStatus = 429;
+
+### testmode
+
+`testmode` allows you to see exactly how your setup is functioning.
 
 ### limit
 
