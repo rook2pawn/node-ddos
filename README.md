@@ -19,8 +19,8 @@ Configurable Denial-Of-Service prevention for http services
 ```
 
 Run `npm run setup-helper` and place the console side by side with your browser window and reload a few times and see how `burst` and `limit` are separate
-concepts. `burst` controls the expiry timer, and `limit` is what governs the actual denial. I made a [video tutorial](https://youtu.be/uw4tD8EbS3k) on this, which should
-give you an intuitive sense of what's going on. Play with the limit and burst in the `setupHelper.js`. 
+concepts. `burst` controls the expiry timer, and `limit` is what governs the actual denial. I made a [video tutorial](https://youtu.be/yx2T0oaF2T0) on this, which should
+give you an intuitive sense of what's going on. Play with the limit and burst in the `setupHelper.js`.
 
 
 
