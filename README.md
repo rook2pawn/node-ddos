@@ -69,6 +69,20 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
     app.use(ddos.express)
 ```
 
+or with a router
+
+```js
+    const router = express.Router();
+
+    router.use(ddos.express);
+    router.get("/", (req,res,next) => {
+      console.log("Beep");
+      res.end("Boop");
+    })
+    app.use(router);
+```
+This way, all paths defined on the router will be protected.
+
 ### With [HapiJS](https://hapijs.com/ "HapiJS")
 
 ```js
