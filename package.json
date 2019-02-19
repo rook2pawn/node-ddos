@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup-helper": "node setupHelper.js",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "nyc tape test/test-*.js | tap-spec"
   },
   "nyc": {
