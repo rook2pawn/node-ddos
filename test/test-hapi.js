@@ -1,13 +1,14 @@
 var tape = require("tape");
-const niv = require("npm-install-version");
-niv.install("hapi@16");
-var Hapi = require("hapi@16");
-var request = require("request");
-var QL = require("queuelib");
-
-var Ddos = require("../");
 
 tape("count and expiry test", function(t) {
+  const niv = require("npm-install-version");
+  niv.install("hapi@16");
+  var Hapi = require("hapi@16");
+  var request = require("request");
+  var QL = require("queuelib");
+
+  var Ddos = require("../");
+  
   t.plan(11);
   var q = new QL();
   var ddos = new Ddos({ burst: 3, limit: 4 });
