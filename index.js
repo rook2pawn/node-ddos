@@ -26,17 +26,54 @@ ddos.prototype.update = lib.update;
 ddos.prototype.handle = lib.handle;
 ddos.prototype.express = lib.handle;
 ddos.prototype.koa = function() {
-  return require("./lib/koa")(this.params, this.table, lib._handle);
+  return function(ctx, next) {
+    var req = ctx.req;
+    var res = ctx.res;
+
+    return lib._handle(this.params,this.table, req)
+    .then(() => {
+      return next()
+    })
+  };
 };
 
+ddos.prototype.hapi17 = function (request, h) {
+  const req = request.raw.req;
+  const params = this.params;
+  const table = this.table;
+
+
+  return lib._handle(params, table, req)
+  .then(() => {
+    return h.continue
+  })
+  .catch((e) => {
+    if (e.action === "respond") {
+      const response = h.response(e.message);
+      response.takeover();
+      response.code(e.code);
+      return response;
+    }
+  })
+
+
+}
 ddos.prototype.hapi = function(request, reply) {
-  var req = request.raw.req;
-  var res = reply;
-  var next = reply.continue.bind(reply);
-  var table = this.table;
+  const req = request.raw.req;
+  const res = reply;
+  const table = this.table;
   const params = this.params;
 
-  lib._handle(params, table, req, res, next);
+  return lib._handle(params, table, req)
+  .then(() => {
+    return reply.continue();
+  })
+  .catch((e) => {
+    if (e.action === "respond") {
+      return res(e.message).code(e.code);
+    }
+  })
+
 };
 ddos.prototype.ipv4re = lib.ipv4re;
 

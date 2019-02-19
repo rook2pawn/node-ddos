@@ -24,7 +24,7 @@ tape("stop test", function(t) {
   };
   var c = function(req, res, next) {
     var num = req.body.num * 2;
-    res.end(JSON.stringify({foo:num}));
+    res.end(JSON.stringify({ foo: num }));
   };
   app.post("/article", a, b, c);
 

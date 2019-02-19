@@ -1,7 +1,9 @@
 var tape = require("tape");
+
 const niv = require("npm-install-version");
-niv.install("hapi@16");
-var Hapi = require("hapi@16");
+niv.install("hapi@17");
+var Hapi = require("hapi@17");
+
 var request = require("request");
 var QL = require("queuelib");
 
@@ -12,17 +14,29 @@ tape("count and expiry test", function(t) {
   var q = new QL();
   var ddos = new Ddos({ burst: 3, limit: 4 });
 
-  const server = new Hapi.Server();
-  server.connection({ port: 3000, host: "localhost" });
+  const server = Hapi.server({
+    port: 3000,
+    host: "localhost"
+  });
+
   server.route({
     method: "GET",
     path: "/",
-    handler: function(request, reply) {
-      reply("Hello, world!");
+    handler: (request, h) => {
+      return "Hello, world!";
     }
   });
-  server.ext("onRequest", ddos.hapi.bind(ddos));
-  server.start(err => {
+
+  server.route({
+    method: "GET",
+    path: "/{name}",
+    handler: (request, h) => {
+      return "Hello, " + encodeURIComponent(request.params.name) + "!";
+    }
+  });
+  server.ext("onRequest", ddos.hapi17.bind(ddos));
+
+  server.start().then(() => {
     q.series(
       [
         lib => {

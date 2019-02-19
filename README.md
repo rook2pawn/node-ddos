@@ -54,11 +54,10 @@ Now we loop back to **Rule 2** when that when expiry is less than or equal to 0,
 
 ## Supports
 
-    * HapiJS
+    * HapiJS 17+ 
+    * HapiJS 16 and before
     * Express 4+
-    * Koa, or
-    * Any middleware stack that supports *next*
-      e.g. fn (req,res,next)
+    * Koa
 
 ### With [Express](https://github.com/expressjs/expressjs.com "Express")
 
@@ -84,7 +83,34 @@ or with a router
 ```
 This way, all paths defined on the router will be protected.
 
-### With [HapiJS](https://hapijs.com/ "HapiJS")
+### With [HapiJS 17+](https://hapijs.com/ "HapiJS")
+
+```js
+    var Ddos = require('ddos')
+    var Hapi = require('hapi');
+
+    var ddos = new Ddos;
+    const server = Hapi.server({
+      port: 3000,
+      host: "localhost"
+    });
+    server.route({
+        method: "GET",
+        path: "/",
+        handler: (request, h) => {
+            return "Hello, world!";
+        }
+    });
+    server.ext("onRequest", ddos.hapi17.bind(ddos));
+
+    server.start()
+    .then(() => {
+
+    })
+
+```
+
+### With [HapiJS 16 and before](https://hapijs.com/ "HapiJS")
 
 ```js
     var Ddos = require('ddos')

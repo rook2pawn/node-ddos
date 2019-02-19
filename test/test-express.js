@@ -1,6 +1,6 @@
 var tape = require("tape");
 var express = require("express");
-var request = require("supertest");
+var request = require("supertest-light");
 var QL = require("queuelib");
 
 var Ddos = require("../");
@@ -19,8 +19,8 @@ tape("count and expiry test", function(t) {
     next();
   };
   var c = function(req, res, next) {
-    res.writeHead(200, {'Content-Type':'application/json'})
-    res.end(JSON.stringify({ foo: "bar" }))
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ foo: "bar" }));
   };
   app.get("/article", a, b, c);
 
@@ -30,10 +30,8 @@ tape("count and expiry test", function(t) {
       lib => {
         request(app)
           .get("/article")
-          .expect(200)
-          .expect("Content-Type", "application/json")
-          .end(function(err, res) {
-            t.notOk(err, "error should not exist");
+          .then(res => {
+            t.equal(res.statusCode, 200);
             var key = Object.keys(ddos.table)[0];
             t.deepEqual(ddos.table[key], { count: 1, expiry: 1 });
             lib.done();
@@ -42,10 +40,8 @@ tape("count and expiry test", function(t) {
       lib => {
         request(app)
           .get("/article")
-          .expect(200)
-          .expect("Content-Type", "application/json")
-          .end(function(err, res) {
-            t.notOk(err, "error should not exist");
+          .then(res => {
+            t.equal(res.statusCode, 200);
             var key = Object.keys(ddos.table)[0];
             t.deepEqual(ddos.table[key], { count: 2, expiry: 1 });
             lib.done();
@@ -54,10 +50,8 @@ tape("count and expiry test", function(t) {
       lib => {
         request(app)
           .get("/article")
-          .expect(200)
-          .expect("Content-Type", "application/json")
-          .end(function(err, res) {
-            t.notOk(err, "error should not exist");
+          .then(res => {
+            t.equal(res.statusCode, 200);
             var key = Object.keys(ddos.table)[0];
             t.deepEqual(ddos.table[key], { count: 3, expiry: 1 });
             lib.done();
@@ -66,10 +60,8 @@ tape("count and expiry test", function(t) {
       lib => {
         request(app)
           .get("/article")
-          .expect(200)
-          .expect("Content-Type", "application/json")
-          .end(function(err, res) {
-            t.notOk(err, "error should not exist");
+          .then(res => {
+            t.equal(res.statusCode, 200);
             var key = Object.keys(ddos.table)[0];
             t.deepEqual(ddos.table[key], { count: 4, expiry: 2 });
             lib.done();
@@ -78,9 +70,8 @@ tape("count and expiry test", function(t) {
       lib => {
         request(app)
           .get("/article")
-          .expect(429)
-          .end(function(err, res) {
-            t.notOk(err, "error should not exist");
+          .then(res => {
+            t.equal(res.statusCode, 429);
             var key = Object.keys(ddos.table)[0];
             t.deepEqual(ddos.table[key], { count: 5, expiry: 4 });
             lib.done();
@@ -90,9 +81,8 @@ tape("count and expiry test", function(t) {
         setTimeout(() => {
           request(app)
             .get("/article")
-            .expect(429)
-            .end(function(err, res) {
-              t.notOk(err, "error should not exist");
+            .then(res => {
+              t.equal(res.statusCode, 429);
               var key = Object.keys(ddos.table)[0];
               // should start at {count:5, expiry:1} since 4 - 3 = 1
               // after a request, it should penalize for being over burst, which means
@@ -106,10 +96,8 @@ tape("count and expiry test", function(t) {
         setTimeout(() => {
           request(app)
             .get("/article")
-            .expect(200)
-            .expect("Content-Type", "application/json")
-            .end(function(err, res) {
-              t.notOk(err, "error should not exist");
+            .then(res => {
+              t.equal(res.statusCode, 200);
               var key = Object.keys(ddos.table)[0];
               t.deepEqual(ddos.table[key], { count: 1, expiry: 1 });
               lib.done();
