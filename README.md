@@ -29,7 +29,7 @@ give you an intuitive sense of what's going on. Play with the limit and burst in
 ```js
     var Ddos = require('ddos')
     var express = require('express')
-    var ddos = new Ddos({burst:10, limit:15})
+    var ddos = new Ddos({burst:2, limit:4})
     var app = express();
     app.use(ddos.express);
 ```
@@ -82,6 +82,12 @@ or with a router
     app.use(router);
 ```
 This way, all paths defined on the router will be protected.
+
+You can also place it **only on sensitive database write paths or cpu/disk intensive operations** :
+
+```js
+    app.post('/user', ddos.express, <some db call>);
+``` 
 
 ### With [HapiJS 17+](https://hapijs.com/ "HapiJS")
 
