@@ -134,10 +134,77 @@ tape("options - onDenial  ", function(t) {
   };
 
   doCall()
-    .then(() => doCall())
-    .then(() => doCall())
-    .then(res => {
-      t.equals(count, 2);
-      ddos.end();
+      .then(() => doCall())
+      .then(() => doCall())
+      .then(res => {
+        t.equals(count, 2);
+        ddos.end();
+      });
+});
+
+
+tape("options - whiteListHookSync  ", function(t) {
+  t.plan(1);
+  let count = 0;
+  const whiteListHookSync = function(req) {
+    return req.headers.authorization === 'pass';
+  };
+  const ddos = new Ddos({ limit: 1, whiteListHookSync });
+  const app = express();
+  app.use(ddos.express);
+  app.get("/user", (req, res) => {
+    console.log("reply");
+    res.status(200).json({ name: "john" });
+    count++;
+  });
+
+  const doPassCall = function() {
+    return request(app)
+        .set('Authorization','pass')
+        .get("/user");
+  };
+
+  doPassCall()
+      .then(() => doPassCall())
+      .then(() => doPassCall())
+      .then(() => {
+        t.equals(count, 3);
+        ddos.end();
+      });
+});
+
+tape("options - whiteListHook ", function(t) {
+  t.plan(1);
+  let count = 0;
+  const whiteListHook = function(req) {
+    return new Promise((resolve,reject)=>{
+      if(req.headers.authorization === 'pass'){
+        return resolve();
+      }else {
+        return reject();
+      }
     });
+  };
+  const ddos = new Ddos({ limit: 1, whiteListHook });
+  const app = express();
+  app.use(ddos.express);
+  app.get("/user", (req, res) => {
+    console.log("reply");
+    res.status(200).json({ name: "john" });
+    count++;
+  });
+
+  const doPassCall = function() {
+    return request(app)
+        .set('Authorization','pass')
+        .get("/user");
+  };
+
+  doPassCall(200)
+      .then(() => doPassCall(200))
+      .then(() => doPassCall(200))
+      .then(() => {
+        t.equals(count, 3);
+        ddos.end();
+      });
 });

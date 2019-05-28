@@ -294,6 +294,37 @@ If this callback is specified, it will be called with the `req` object on a deni
   const ddos = new Ddos({ limit: 2, onDenial });
 ```
 
+### whiteListHookSync
+
+A synchronous function for whitelisting. In case you need to whitelist by a criteria different than IP.
+For example, if Admin users can make infinite requests. It must return true or false.
+```js
+  const whiteListHookSync = function(req) {
+    return user.isAdmin(req.headers.authorization);
+  };
+
+  const ddos = new Ddos({ limit: 2, whiteListHookSync });
+```
+
+### whiteListHook
+
+An asynchronous function for whitelisting. In case you need to whitelist by a criteria different than IP.
+For example, if Admin users can make infinite requests. It must return true or false.
+```js
+  const whiteListHook = function(req) {
+    return new Promise((resolve,reject)=>{
+      if(req.headers.authorization === 'pass'){
+        return resolve(); // Whitelist this request
+      }else {
+        return reject(); // Continue process
+      }
+    });
+  };
+
+  const ddos = new Ddos({ limit: 2, whiteListHook });
+```
+
+
 Contribute
 ==========
 
